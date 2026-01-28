@@ -1,0 +1,24 @@
+hotkey:
+  combination: "ctrl+shift+space"
+
+audio:
+  sample_rate: 16000
+  max_recording_seconds: 60
+
+whisper:
+  model: "whisper-1"
+
+openai:
+  enabled: true
+  model: "gpt-4o-mini"
+  system_prompt: |
+    Fix grammar and punctuation. Capitalize appropriately.
+    Maintain meaning. Return only corrected text.
+
+ui:
+  overlay_position: "bottom-right"
+  overlay_size: 48
+
+output:
+  auto_paste: true
+  paste_delay_ms: 50
