@@ -9,14 +9,14 @@ whisper:
   model: "whisper-1"
 
 openai:
-  enabled: true
+  enabled: false
   model: "gpt-4o-mini"
   system_prompt: |
     Fix grammar and punctuation. Capitalize appropriately.
     Maintain meaning. Return only corrected text.
 
 ui:
-  overlay_position: "bottom-right"
+  overlay_position: "bottom-center"
   overlay_size: 48
 
 output:

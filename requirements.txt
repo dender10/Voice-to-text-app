@@ -6,3 +6,4 @@ pyperclip>=1.9.0
 openai>=1.0.0
 pyyaml>=6.0
 python-dotenv>=1.0.0
+Pillow>=10.0.0
