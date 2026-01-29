@@ -55,11 +55,10 @@ class WhisperEngine:
             buffer.seek(0)
             buffer.name = "audio.wav"
 
-            # Call OpenAI Whisper API
+            # Call OpenAI Whisper API (no language param = auto-detect)
             transcript = client.audio.transcriptions.create(
                 model="whisper-1",
                 file=buffer,
-                language="en",
             )
 
             text = transcript.text.strip()

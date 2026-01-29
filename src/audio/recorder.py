@@ -67,10 +67,11 @@ class AudioRecorder:
         # Flatten to 1D array
         audio = audio.flatten()
 
-        # Enforce max duration
-        max_samples = self.max_seconds * self.sample_rate
-        if len(audio) > max_samples:
-            audio = audio[:max_samples]
+        # Enforce max duration (0 = unlimited)
+        if self.max_seconds > 0:
+            max_samples = self.max_seconds * self.sample_rate
+            if len(audio) > max_samples:
+                audio = audio[:max_samples]
 
         return audio
 

@@ -3,7 +3,7 @@ hotkey:
 
 audio:
   sample_rate: 16000
-  max_recording_seconds: 60
+  max_recording_seconds: 0
 
 whisper:
   model: "whisper-1"
