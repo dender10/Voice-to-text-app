@@ -76,6 +76,12 @@ class HotkeyListener:
                     if self.on_release:
                         threading.Thread(target=self.on_release, daemon=True).start()
 
+    def reset(self):
+        """Clear all key state to prevent stale keys from re-triggering."""
+        with self._lock:
+            self._pressed_keys.clear()
+            self._hotkey_active = False
+
     def start(self):
         """Start listening for hotkeys."""
         if self._listener is None:

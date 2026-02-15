@@ -1,6 +1,7 @@
 """Main application orchestrator."""
 
 import os
+import time
 import ctypes
 import yaml
 import threading
@@ -166,11 +167,14 @@ class WisprFlowApp:
 
             print(f"Formatted: {formatted}")
 
-            # Paste
+            # Paste — reset hotkey state first so simulated Ctrl+V
+            # doesn't re-trigger the hotkey via stale modifier keys
             self._set_state(AppState.PASTING)
+            self.hotkey.reset()
             success = self.clipboard.copy_and_paste(formatted, target_hwnd=self._target_hwnd)
 
             if success:
+                time.sleep(0.15)  # let simulated key events drain
                 self._set_state(AppState.IDLE)
             else:
                 self._set_state(AppState.ERROR, "Paste failed")
