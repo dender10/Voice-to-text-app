@@ -1,6 +1,7 @@
 """Main application orchestrator."""
 
 import os
+import ctypes
 import yaml
 import threading
 from pathlib import Path
@@ -52,7 +53,7 @@ class WisprFlowApp:
                 "system_prompt": "Fix grammar and punctuation. Capitalize appropriately. Maintain meaning. Return only corrected text.",
             },
             "ui": {"overlay_position": "bottom-right", "overlay_size": 48},
-            "output": {"auto_paste": True, "paste_delay_ms": 50},
+            "output": {"auto_paste": True, "paste_delay_ms": 100},
         }
 
     def _init_components(self):
@@ -91,7 +92,7 @@ class WisprFlowApp:
         # Clipboard output
         self.clipboard = ClipboardOutput(
             auto_paste=output_cfg.get("auto_paste", True),
-            paste_delay_ms=output_cfg.get("paste_delay_ms", 50),
+            paste_delay_ms=output_cfg.get("paste_delay_ms", 100),
         )
 
         # Hotkey listener
@@ -114,6 +115,9 @@ class WisprFlowApp:
         with self._processing_lock:
             if self._state != AppState.IDLE:
                 return
+
+            # Capture the foreground window so we can restore focus before pasting
+            self._target_hwnd = ctypes.windll.user32.GetForegroundWindow()
 
             self._set_state(AppState.RECORDING)
             success = self.recorder.start()
@@ -164,7 +168,7 @@ class WisprFlowApp:
 
             # Paste
             self._set_state(AppState.PASTING)
-            success = self.clipboard.copy_and_paste(formatted)
+            success = self.clipboard.copy_and_paste(formatted, target_hwnd=self._target_hwnd)
 
             if success:
                 self._set_state(AppState.IDLE)
@@ -197,11 +201,11 @@ class WisprFlowApp:
 
         # Start hotkey listener
         self.hotkey.start()
-        print("Hotkey listener started (Ctrl+Shift+Space)")
+        print("Hotkey listener started (Ctrl+Shift)")
 
         # Run overlay (blocks main thread)
         print("Starting overlay...")
-        print("\nReady! Hold Ctrl+Shift+Space to record, release to transcribe.")
+        print("\nReady! Hold Ctrl+Shift to record, release to transcribe.")
         print("Press Ctrl+C to exit.\n")
 
         try:

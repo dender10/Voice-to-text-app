@@ -6,7 +6,7 @@ import threading
 
 
 class HotkeyListener:
-    """Listens for global hotkeys (Ctrl+Shift+Space)."""
+    """Listens for global hotkeys (Ctrl+Shift)."""
 
     def __init__(
         self,
@@ -24,10 +24,7 @@ class HotkeyListener:
         self._required_keys = {
             keyboard.Key.ctrl_l,
             keyboard.Key.shift,
-            keyboard.Key.space,
         }
-        # Alternative keys (ctrl_r instead of ctrl_l)
-        self._alt_ctrl = keyboard.Key.ctrl_r
 
     def _normalize_key(self, key) -> Optional[keyboard.Key]:
         """Normalize key to handle left/right variants."""
@@ -74,7 +71,7 @@ class HotkeyListener:
 
             # If hotkey was active and any required key is released
             if was_active:
-                if normalized_key in {keyboard.Key.ctrl_l, keyboard.Key.shift, keyboard.Key.space}:
+                if normalized_key in {keyboard.Key.ctrl_l, keyboard.Key.shift}:
                     self._hotkey_active = False
                     if self.on_release:
                         threading.Thread(target=self.on_release, daemon=True).start()

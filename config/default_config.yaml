@@ -1,5 +1,5 @@
 hotkey:
-  combination: "ctrl+shift+space"
+  combination: "ctrl+shift"
 
 audio:
   sample_rate: 16000
@@ -21,4 +21,4 @@ ui:
 
 output:
   auto_paste: true
-  paste_delay_ms: 50
+  paste_delay_ms: 100
